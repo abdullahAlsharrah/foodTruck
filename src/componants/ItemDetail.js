@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router";
+import CartContext, { cart } from "../assets/data/cart";
 import { dishes } from "../assets/data/dishes";
 import { extars } from "../assets/data/extras";
 import Extra from "./Extra";
@@ -7,6 +8,7 @@ import Extra from "./Extra";
 const ItemDetail = () => {
   const { id } = useParams();
   const item = dishes.find((i) => i.id === +id);
+  const [cart, setCart] = useContext(CartContext);
 
   const [itemExtra, setItemExtra] = useState(
     extars.filter((i) => item.extars.includes(i.id))
@@ -30,7 +32,20 @@ const ItemDetail = () => {
     itemExtra.forEach((i) => (total += i.price));
     return `${total.toFixed(2)} KWD`;
   };
+  const addItem = () => {
+    const findItem = cart.find((i) => i.id === +id);
 
+    if (findItem) {
+      findItem.quantity += 1;
+    } else {
+      const newCart = [
+        ...cart,
+        { ...item, extra: itemExtra, quantity: 1, price: price() },
+      ];
+
+      setCart(newCart);
+    }
+  };
   return (
     <div>
       <img
@@ -56,7 +71,7 @@ const ItemDetail = () => {
       <div
         className="fixed-bottom p-3 d-flex justify-content-center align-items-center"
         style={{ height: "50px", background: "white", zIndex: 1000 }}>
-        <button className="btn btn-dark w-100 ms-2 me-2">
+        <button className="btn btn-dark w-100 ms-2 me-2" onClick={addItem}>
           Add to Cart {price()}
         </button>
       </div>

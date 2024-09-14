@@ -18,11 +18,11 @@ const MenuItem = ({ item }) => {
         </div>
         <div className="d-flex align-self-end justify-content-center align-items-center ">
           <p className="m-0 me-1 fw-bold"> {item.price.toFixed(2)} KD</p>
-          <Button
+          {/* <Button
             variant="outline-dark fw-bold"
             style={{ height: 30, lineHeight: 1 }}>
             + Add
-          </Button>
+          </Button> */}
         </div>
       </div>
     </Link>
